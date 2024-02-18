@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'org.exploit'
@@ -9,10 +10,41 @@ repositories {
     mavenCentral()
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.exploit'
+            artifactId = 'secure-memory'
+            version = '1.0'
+
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url 'https://maven.exploit.org'
+
+            credentials {
+                username(exploitUsername)
+                password(exploitPassword)
+            }
+        }
+    }
+}
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation 'net.java.dev.jna:jna:5.13.0'
+}
+
+jar {
+    setDuplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+    from(configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }) {
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+    }
 }
 
 test {

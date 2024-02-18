@@ -11,6 +11,30 @@ remove all permissions from the memory, so it will not be accessible at all unti
 ## Installation
 Please note that SecureMemory is only supported on UNIX systems (Linux, macOS and etc).
 
+First add exploit.org's maven repository:
+Maven:
+```xml
+<repositories>
+    <repository>
+        <id>exploit</id>
+        <name>Exploit Repository</name>
+        <url>https://maven.exploit.org</url>
+    </repository>
+</repositories>
+```
+
+Gradle:
+```groovy
+repositories {
+    mavenCentral()
+
+    maven {
+        url("https://maven.exploit.org")
+    }
+}
+```
+Then add secure-memory dependency:
+
 Maven:
 ```xml
 <dependency>
